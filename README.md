@@ -1,6 +1,6 @@
 # EnterThePromisedLand
 
-This repository contains the presentation held on 28th of January at the HannoverJS meetup.
+This repository contains the presentation held on 26th of January at the HannoverJS meetup.
 
 https://hannoverjs.de/
 
