@@ -1,0 +1,1146 @@
+% $Header$
+
+\documentclass[xcolor=dvipsnames, handout]{beamer} %xcolor=dvipsnames
+%\documentclass[xcolor=dvipsnames]{beamer} %xcolor=dvipsnames
+\usepackage{pgfpages}
+
+\mode<presentation>
+{
+	\usetheme{PaloAlto}
+	\usecolortheme[named=MidnightBlue]{structure}
+	
+	\setbeamercovered{transparent}
+	% or whatever (possibly just delete it)
+	\setbeameroption{show notes} % un-comment to see the notes
+%	\setbeameroption{show notes on second screen=right}
+}
+
+
+
+%Copyright 2017 by Felix Eckstein, github@embedded-engineering.de
+%
+%The content of this talk is derived from a term paper that was prepared during the 
+%winter semester 2016/2017 in the course ``1908 -- Seminar Moderne Programmiertechniken''
+%at the FernUniversität Hagen.
+%
+%The official presentation of the paper will be between 10th and 12th of March 2017 in Hagen.
+%The original title of the term paper is ``Asnychrone Programmierung: Moderne Methoden in ECMAScript~6''.
+%\skippingparagraph
+%
+%This presentation will be made available on
+%https://github.com/opt12/EnterThePromisedLand
+%and is licensed under the
+%\href{https://creativecommons.org/licenses/by-nc-sa/4.0/}{Creative Commons Attribution Share Alike 4.0} license.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This LaTeX Beamer file is based on the solution template for:
+
+% - Giving a talk on some subject.
+% - The talk is between 15min and 45min long.
+% - Style is ornate.
+
+% Copyright 2004 by Till Tantau <tantau@users.sourceforge.net>.
+%
+% In principle, this file can be redistributed and/or modified under
+% the terms of the GNU Public License, version 2.
+%
+% However, this file is supposed to be a template to be modified
+% for your own needs. For this reason, if you use this file as a
+% template and not specifically distribute it as part of a another
+% package/program, I grant the extra permission to freely copy and
+% modify this file as you see fit and even to delete this copyright
+% notice. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Thank you so much Till :-)
+
+
+\usepackage[english]{babel}
+% or whatever
+
+\usepackage[latin1]{inputenc}
+% or whatever
+
+\usepackage{times}
+\usepackage[T1]{fontenc}
+
+\input{structure.tex} % Include the structure.tex file which specified the document structure and layout
+
+
+% Or whatever. Note that the encoding and the font should match. If T1
+% does not look nice, try deleting the line with the fontenc.
+
+\title[Enter the Promised Land] % (optional, use only with long paper titles)
+{Enter the Promised Land}
+
+\subtitle
+{Modern Methods for \\Asynchronous Programming in ECMAScript~6} % (optional)
+
+\author[] % (optional, use only with lots of authors)
+{Felix~Eckstein}
+% - Use the \inst{?} command only if the authors have different
+%   affiliation.
+
+\institute[HannoverJS] % (optional, but mostly needed)
+{
+  JavaScript Hobbyist
+}
+  
+% - Use the \inst command only if there are several affiliations.
+% - Keep it simple, no one is interested in your street address.
+
+\date[] % (optional)
+{HannoverJS -- JavaScript User Group Meeting\\
+January 26\textsuperscript{th}, 2017}
+
+\subject{Talks}
+% This is only inserted into the PDF information catalog. Can be left
+% out. 
+
+
+
+% If you have a file called "university-logo-filename.xxx", where xxx
+% is a graphic format that can be processed by latex or pdflatex,
+% resp., then you can add a logo as follows:
+
+ \pgfdeclareimage[height=1cm]{university-logo}{Images/HannoverJs.png}
+%  \pgfdeclareimage[height=1cm]{university-logo}{Images/UniHagen.png}
+ \logo{\pgfuseimage{university-logo}}
+
+
+
+% Delete this, if you do not want the table of contents to pop up at
+% the beginning of each subsection:
+\AtBeginSection[]
+{
+  \begin{frame}<beamer>{Outline}
+    \tableofcontents[currentsection]%,currentsubsection]
+  \end{frame}
+}
+
+\begin{document}
+
+\begin{frame}{Disclaimer}
+	
+	The content of this talk is derived from a term paper that was prepared during the 
+	winter semester 2016/2017 in the course ``1908 -- Seminar Moderne Programmiertechniken''
+	at the FernUniversität Hagen.
+	
+	The official presentation of the paper will be between 10\textsuperscript{th} and 12\textsuperscript{th} of March 2017 in Hagen.\\
+	The original title of the term paper is \\
+	``Asnychrone Programmierung: \\
+	Moderne Methoden in ECMAScript~6''.
+	\skippingparagraph
+	
+	This presentation will be made available on\\
+	\url{https://github.com/opt12/EnterThePromisedLand} \\
+	and is licensed under the \\
+	\href{https://creativecommons.org/licenses/by-nc-sa/4.0/}{Creative Commons Attribution Share Alike 4.0} license.
+	
+	
+\end{frame}
+
+
+\begin{frame}
+  \titlepage
+	\note{
+		\begin{itemize}
+			\item Wer von euch programmiert in JavaScript?
+			\item Wer von Euch ist der Meinung, dass JavaScript eine ernstzunehmende Programmiersprache ist?
+			\item Also programmieren alle von uns asynchronen Code
+			\item Was habe ich über asynchrone Programmierung gelernt \\
+				weshalb sind mit ECMAScript 6 (2015) wirklich tolle Features im Sprachkern angekomen sind
+			\item Wege aus der \alert{Callback Hell}
+			\item Zunächst Grundlagen async Programmierung und Callbacks
+			\item Promises für asynchrone Daten
+			\item Generators für komplexe Kontrollflüsse
+			\item Wer benutzt tagtäglich Promises?
+		\end{itemize}
+			
+	Keine Angst, es wird Katzenfotos geben.
+	}
+\end{frame}
+
+\begin{frame}{Outline}
+  \tableofcontents%[pausesections]
+  % You might wish to add the option [pausesections]
+  
+  	\note{
+  	Modern Methods in ECMAScript~6\\
+	What's it all about?
+
+  	Today we want to walk through this agenda:
+  	\begin{itemize}
+  		\item What is asynchronous programming?
+  		\item How is this done in traditional JavaScript?
+  		\item What modern methods were introduced in ECMAScript~6?
+  		\begin{itemize}
+  			\item Promises to pass asynchronous results
+  			\item Generators to ease the control flow
+  		\end{itemize}
+  		\item Putting it all together
+  	\end{itemize}
+	}
+\end{frame}
+
+
+% Since this a solution template for a generic talk, very little can
+% be said about how it should be structured. However, the talk length
+% of between 15min and 45min and the theme suggest that you stick to
+% the following rules:  
+
+% - Exactly two or three sections (other than the summary).
+% - At *most* three subsections per section.
+% - Talk about 30s to 2min per frame. So there should be between about
+%   15 and 30 frames, all told.
+
+\section{Introduction}
+
+	\subsection{JavaScript: Good to Know}
+
+	\begin{frame}{JavaScript: Good to Know}{}
+		\begin{itemize}
+			\item JavaScript has functional properties
+			\begin{itemize}
+				\item Functions are ``First-Class Citizens'' \ldots\\
+				\ldots and hence can be passed around in variables
+			\end{itemize}
+			\item JavaScript is single threaded
+			\item Program execution is Event-Loop driven
+			\item Program execution follows ``Run-to-Completion'' sematics
+		\end{itemize}
+	\note{
+		Run-to-Completion: 
+		\begin{itemize}
+			\item Funktionsausführung wird durch Event-Loop angestoßen
+			\item Damit wird ein neuer Stack angelegt mit Funktionsaufrufen
+			\item Funktion wird bis zum Ende ausgeführt
+			\item Bis der Call-Stack leer ist
+			\item Erst dann kommt der nächste Tick der event-Loop und stößt auf leerem stack wieder neue Funktionsausführung an
+			\item Es gibt keine Möglichkeit, dass eine Funktionsausführung von externen Ereignissen unterbrochen wird
+		\end{itemize}
+		
+	}
+	
+	\end{frame}
+
+%	\begin{frame}{The Event-Loop}
+%		\begin{figure}
+%			\includegraphics[width=\textwidth]{Images/Gallaba,Mesbahetal.png}
+%			\caption{The JavaScript Even-Loop Model~(from \cite[p.~2]{Gallaba.b})}
+%		\end{figure}
+%	\end{frame}	
+
+%even if the frame is skipped, I want to have the paper in the bibliography:
+\nocite{Gallaba.b}
+	
+	\subsection{Basic Asynchronous Programming}
+	
+	\begin{frame}{Function Calls in Single Threaded Execution}{``Synchronous Programming''}
+		
+		\begin{columns}
+			\column{0.5\textwidth}
+			\begin{itemize}[<+->]
+				\item Synchronous functions
+				\begin{itemize}[<.->]
+					\item get called
+					\item calculate their result
+					\item return their result
+				\end{itemize}
+				\item Function calls may block the execution
+				\item Waiting for external events leads to inefficiency
+				\item No concurrency possible
+			\end{itemize}
+			\column{0.5\textwidth}
+				\begin{figure}
+					\includegraphics[height=.8\textheight]{Images/syncFlow.png}
+				\end{figure}
+		\end{columns}
+	
+	\note{
+		\begin{itemize}
+			\item Das Hauptprogramm kann nicht weiterarbeiten
+			\item Nebenläufigkeit ist nicht möglich
+		\end{itemize}
+	}
+	
+	\end{frame}
+
+	\begin{frame}{Asynchronous Programming}
+		
+	\begin{itemize}[<+->]
+		\item<1-> Asynchronous Functions do it differently:	
+		\begin{itemize}[<+->]
+			\item<+-> Async functions get called \alert{now}, \ldots
+			\item<+-> \ldots return immediately and \ldots
+			\item<+-> \ldots calculate their result.
+			\item<+-> This result is retrieved \alert{later}
+		\end{itemize}
+		\item<+-> The calling code regains control directly 
+		\item<+-> The main program can do useful things while the async function still works on the result.
+		\item<+-> This brings \alert{concurrency} into single threaded execution
+	\end{itemize}
+
+	\note{
+		Erkläre hier, dass die asynchronen Funktionen eben \alert{doch in einem anderen Thread} ablaufen können.
+
+		Eventuell sogar noch die Grafik Zeigen: 
+		
+		\begin{figure}
+			\includegraphics[height=.5\textheight]{Images/NodeJS_eventLoop_externalThreads.png}
+			\caption{Asnychronous Functions are executed outside the JavaScript-Single-Thread}
+		\end{figure}
+		
+	}
+	\end{frame}
+
+	\begin{frame}{Retrieving Asynchronous Results}
+	\only<1>{How can I retrieve the result of an asynchronous function call?}
+	
+	\only<2->{
+	\begin{itemize}[<+->]
+		\item<2-> Main program is divided into chunks
+		\item<2-> The chunk placing the function call \alert<2>{now} \\runs to completion
+		\item<3-> The availability of an async result is enqueued in \\the event queue
+		\item<4-> This event is processed in a \alert<4>{later} tick of the Event-Loop
+		\item<5-> The result is processed in a different execution context 
+	\end{itemize}
+	}
+	
+	\visible<5->{
+		\begin{quote}In fact, the relationship between the \alert{now} and \alert{later} \\
+			parts of your program is at the heart of asynchronous programming. \citep{Simpson.2015}\end{quote}	
+	}
+
+	\note{
+		
+		Trotz anderem Execution Context sind die Variablen vom Aufrufzeitpunkt verfügbar, da diese in einer Closure gehalten werden
+		\skippingparagraph
+		Wir werden gleich sehen, wie das ablaufen kann.
+	}
+	\end{frame}
+
+\section{Callbacks}
+
+	\subsection{Traditional Callback Approach}
+	
+	\begin{frame}{Callbacks to Process Results}
+		``Callback'' functions may be used to process async results
+		
+		\pause
+		\begin{itemize}[<+->]
+			\item The async function receives a callback as parameter
+			\item The callback processes the result of the async call
+			\item The async function is responsible for calling the callback
+			\begin{itemize}
+				\item This call can happen either directly \alert<.>{(evil!)}
+				\item It can be bound to an event which is enqueued \alert<.>{(normal!)}
+			\end{itemize}
+			\item The callback function is usually executed in a different context than the caller function
+		\end{itemize}
+
+		\onslide<+->
+		The callback function acts as the ``\alert<.>{continuation}'' of the program that needs the result.
+		
+		\note{
+			zunächst der Traditionelle ansatz seit Beginn von JavaScript:
+			\skippingparagraph
+			
+			Callbacks
+			\skippingparagraph
+			
+			eine Callbackfunktion wird aufgerufen um das ergebnis zu verarbeiten
+			\skippingparagraph
+			
+			Synchroner Aufruf: Stört die Run-To-Completion weil der Callback mit auf den Call-Stack kommt
+			\skippingparagraph
+			
+			Release of Zalgo: berühmter Blogpost Isaac Z. Schlueter: Designing APIs for Asynchrony \citep{Schlueter.2013}
+			\skippingparagraph
+			Eine ´´coninuaion'' als ``Fortsetzung'' des eigenen Programms
+		}
+	\end{frame}
+
+	\begin{frame}{Example: Simple Callback-Code}{Callback Invocations are Registered at Events of the Asynchronous Function}
+		
+%		\insertcode{snippets/loadImageCallback.js}
+
+		\smaller\lstinputlisting[style=JSStyle, linebackgroundcolor={%
+			\btLstHL<2>{14}%
+			\btLstHL<3>{15,16}% 
+			\btLstHL<4>{4-6}%
+			\btLstHL<5>{7-10}%
+			\btLstHL<6>{11} %
+		}]{snippets/loadImageCallback.js}
+			
+		\note{
+			\begin{itemize}	
+				\item Aufruf der Asynchronen Funktion
+				\item Callback, der übergeben wird inkl.  \alert{Error-Handling}
+				\item Registrieren des Callbacks zum onLoad-event
+				\item Registrieren des Callbacks zum onError-event
+				\item Verknüpfen der url mit der src Property und damit starten der eigentlichen asynchronen Aktion
+			\end{itemize}
+			
+			
+			Erkläre kurz \alert{Error-Handling}
+			
+			Dann kommt noch ein \alert{Sequenzdiagramm}
+		}
+			
+	\end{frame}
+
+	\begin{frame}{Asynchronous Image Retrieval}{Sequence Diagram for Asynchronous Image Retrieval with Callback}
+		\begin{figure}
+			\includegraphics[height=0.85\textheight]{Images/asyncFlow.png}
+		\end{figure}
+
+	\note{
+		\begin{itemize}	
+			\item Event Loop startet Hauptfunktion
+			\item Es wird eine CallbackFunktion zum Verarbeiten des Ergebnis on-the-fly erzeugt
+			\item Asynchroner aufruf inklusive Callback
+			\item Sofortige Rückgabe und weiterführung des Hauptprogramms
+			\item Ausserhalb von \alert{JavaScript Land:}
+			\item Registrieren des Callbacks zum onLoad-event
+			\item Registrieren des Callbacks zum onError-event
+			\item Einreihen des Ergebnisevents \alert{onload}
+			\item Zwischendrin sind viele andere Sachen passiert in \alert{JavaScript Land}
+			\item Aufruf der \alert{Callback Funktion} durch Event-Loop zur Verarbeitung des Ergebnis
+		\end{itemize}
+	}
+	
+	\end{frame}
+
+	\begin{frame}[t]{Let's get our hands dirty!}{Example Using Nested Callbacks}
+		\uncover<1->{\begin{itemize}
+			\item<2-> Load a Logo 
+			\item<3-> Load a cute Cat
+			\item<4-> Apply the Logo as a Watermark
+			\item<5-> Show the Image on a Web-Page
+		\end{itemize}}
+	
+		\only<2>{\smaller\insertcode{snippets/watermarkSeq_loadLogo.js}}
+		\only<3>{\smaller\insertcode{snippets/watermarkSeq_loadCat.js}}
+		\only<4>{\smaller\insertcode{snippets/watermarkSeq_applyWatermark.js}}
+
+				
+		\only<5->{
+%			\smaller\insertcode{snippets/watermarkSeq.js}
+			\smaller\lstinputlisting[style=JSStyle, linebackgroundcolor={%
+				\btLstHL<6>{8}% on slide 3, highlight line 8
+				\btLstHL<7>{7-9}% on slide 4, highlight lines 7-8
+				\btLstHL<8>{5-10}%
+				\btLstHL<9>{3-11}%
+				\btLstHL<10>{3,5,7}%
+				}]{snippets/watermarkSeq.js}
+
+		}
+		
+		\only<6->{That's a Function}\only<7->{ in a Callback}\only<8->{ in a Callback}\only<9->{ in a Callback.}
+		
+		\only<10->{With explicit Error Handling in each Stage!}
+		\only<11->{\hfill\alert{Nice! \frownie}}
+		
+		\note{
+			Das sehen wir uns gleich in echt an.
+			\skippingparagraph
+			
+			Und ja, endlich kommt die Katze.  Danke für die Geduld!
+			\skippingparagraph
+			
+			Eigentlich alles schön!
+			\skippingparagraph
+			
+			Warum ist der Vortrag noch nicht zu Ende?
+			\skippingparagraph
+			
+			\alert{Diese Methode mit Callbacks hat entscheidende Nachteile}
+		}
+	
+	\end{frame}
+	
+	
+	\subsection{Downsides}
+	
+	\begin{frame}[t]{Downsides}{Callbacks Have Quite some of Downsides}
+		\only<beamer>{\only<1,2>{
+			\begin{itemize}[<+->]
+				\item<1-> The ``Pyramid of Doom'' renders code unreadable
+				\item<2-> Nested callbacks are a pain in the brain
+			\end{itemize}
+		\only<1>{
+		\begin{figure}
+			\includegraphics[height=0.5\textheight]{Images/pyramidOfDoom.jpg}
+			\source{\url{http://eng.localytics.com/content/images/2015/04/francois-bg.jpg}}
+		\end{figure}
+		}
+		\only<2>{
+		\begin{figure}
+			\includegraphics[height=0.5\textheight]{Images/callbacks.png}
+			\source{\url{http://i.imgur.com/DEg3cPZ.png}}
+		\end{figure}
+		}}}
+		\only<3->{
+			\begin{itemize}[<+->]
+			\item<3-> The ``Pyramid of Doom'' renders code unreadable
+			\item<3-> Nested callbacks are a pain in the brain
+			\item<3-> Explicit error handling is needed in each step\\
+				There's no way for errors to bubble up
+			\item<4-> Passing a continuation of your program relies on trust\\
+				Bad things can happen in foreign code:
+			\uncover<5->{
+			\begin{itemize}
+				\item Callback is too early (sync instead of async)
+				\item Callback is too late or completely omitted
+				\item Callback is called more than once
+				\item Async function silently swallows Errors
+			\end{itemize}}
+		\item<6-> Effectively an ``Inversion of Control'' \\
+			takes place and you have to trust unknown code \\
+			about your program continuation
+		\end{itemize}}
+	\end{frame}
+
+%	\begin{frame}{Example: Twist your Brain}{Loading Cats and Logo Concurrently}
+%		\smaller{\insertcode{snippets/watermarkConc.js}}
+%
+%		\note{
+%			Die Bilder werden hier \alert{nebenläufig} geladen
+%			
+%			Da ich nicht weiß, welcher Callback zuerst aufgerufen wird muss ich prüfen, ob alles da ist
+%			
+%			Ich brauche plötzlich temporäre Variablen in der Closure
+%			
+%			Es wird unübersichtlich
+%		}
+%	\end{frame}
+	
+
+\section{Promises}
+	\begin{frame}{Is There a Better Way?}
+		\begin{quote}What if instead of handing the continuation of our program to another party, we could expect it to return us a capability to know when its task finishes, and then our code could decide what to do next?~\citep[S.~39]{Simpson.2015}\end{quote}
+		
+		\note{
+			Gibt es eine besser Möglichkeit ohne diese Nachteile?
+			\skippingparagraph
+			
+			Was wäre denn besser?
+			\skippingparagraph
+			
+			Schöner wäre, wenn wir
+			\begin{itemize}
+				\item Nicht einen fremden, \alert{nicht vertrauenswürdigen} Stück Code die Fortsetzung unseres Programms überlassen
+				\item sondern eine Möglichkeit bekommen selber herauszufinden wenn asynchrone Funktion zu Ende ist
+				\item Wann das Ergebnis vorliegt
+				\item Selber zu entscheiden, was wir tun wollen
+			\end{itemize}
+		}
+	\end{frame}
+
+	\begin{frame}{There is a Better Way: ``\ldots I Promise''}
+		In ECMAScript~6 a new object type was introduced which is called ``Promise'':
+
+		\pause
+		A ``Promise'' is?
+
+		\begin{itemize}[<+->]
+			\item A placeholder for a future value
+			\item An object that can be used \\by the receiving function \alert{now}
+			\item An object that can be assigned a value \\by the constructing (async) function \alert{later}
+		\end{itemize}
+	
+	\note{ 
+		\begin{itemize}
+			\item Ich möchte ein Haus kaufen
+			\item Ich habe aber kein Geld
+			\item Ich gehe zur Bank
+			\item Dort bekomme ich \alert{jetzt} eine Kreditzusage
+			\item Damit kann ich mir schon ein Haus suchen und verhandeln
+			\item Diese Zusage muss erst eingelöst sein, wenn ich \alert{später} beim Notar sitze und den Vertrag unterschreibe
+			\item Obwohl ich den Wert (das Geld) noch nicht habe, kann ich schon mit der Promise (der Zusage) arbeiten
+			
+		\end{itemize}
+	}
+	\end{frame}
+
+	\subsection{Foundation}
+	\begin{frame}{The States of a Promise}
+		\begin{figure}
+			\includegraphics[width=0.5\textwidth]{Images/Parker2015-JavaScript.jpg}
+			\caption{\label{promiseStates}The three states of a Promise.~(from \citep[S.~16]{Parker.2015})}
+		\end{figure}
+		 
+		\begin{quote}Any Promise object is in one of three mutually exclusive states: \textbf{fulfilled}, \textbf{rejected}, and \textbf{pending}:  
+		\begin{itemize}
+			\item A promise \texttt{p }is fulfilled if \texttt{p.then(f, r) }will immediately enqueue a Job to call the function \texttt{f}.
+			\item A promise \texttt{p }is rejected if \texttt{p.then(f, r) }will immediately enqueue a Job to call the function \texttt{r}.
+			\item A promise is pending if it is neither fulfilled nor rejected.
+		\end{itemize}
+		A promise is said to be \textbf{settled} if it is not pending, i.e. if it is either fulfilled or rejected.~\citep[\S~25.4]{EcmaTC39.}\end{quote}
+	
+		\note{
+			\begin{itemize}
+				\item Eine Promise hat genau drei Status
+				\item Pending: Wenn noch kein Ergebnis vorliegt. Aber das Promise Objekt ist schon da
+				\item Resolved: Ein Ergebnis liegt vor und die asynchrone Operation ist erfolgreich abgeschlossen
+				\item Rejected: Die Asynchrone Funktion hat einen Fehler gehabt und daher gibt es \alert{kein} Ergebnis\\
+					sondern eine Fehlermeldung
+				\item Eine Promise ist settled oder pending
+				\item Dn status der Promise kann ausschließlich die erzeugende Funktion ändern
+				\item (oder das Laufzeitsystem im Fall von Fehlern)
+			\end{itemize}
+		}
+	\end{frame}
+	
+	\subsection{Mode of Operation}
+	
+	\begin{frame}{Promise Usage}{Basic Functions to Make Use of Promises}
+		To make beneficial use of Promises, \\
+		a few basics need to be understood
+		\begin{itemize}
+			\item<.-> Create a Promise
+			\item<.-> Resolve a Promise
+			\item<.-> Error Handling
+			\item<.-> Promise Chaining
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Example: Creating a Promise}
+%		\smaller{\insertcode{snippets/loadImagePromise.js}}
+		\smaller\lstinputlisting[style=JSStyle, linebackgroundcolor={%
+			\btLstHL<2>{3-11}% on slide 3, highlight line 8
+			\btLstHL<3>{4-6}% on slide 4, highlight lines 7-8
+			\btLstHL<4>{7-10}% on slide 4, highlight lines 7-8
+			\btLstHL<5>{14}% on slide 4, highlight lines 7-8
+		}]{snippets/loadImagePromise.js}
+		
+		
+		\begin{itemize}
+			\item<2->The Promise Constructor is executed synchronously
+			\item<3->\textbf{resolve} and \textbf{reject} are registered for async execution
+			\item<5->The promise object is returned immediately
+			\item<6->Exceptions within the promise constructor lead to a promise rejection 
+			\item<7-> A once settled promise is \alert<5>{immutable}
+			\item<8->The language standard ensures, that \alert<6>{either} \textbf{resolve} or \textbf{reject} \\
+				are called \alert<6>{exactly once} on a promise object.
+		\end{itemize}
+		\note{
+
+			\begin{itemize}
+				\item Ausführen des Konstruktors
+				\item Rückgabe der Promise
+				\item resolve bzw. reject asynchrone aufrufe
+			\end{itemize}
+			The language standard ensures, that \alert{either} \textbf{resolve} or \textbf{reject} are called \alert{exactly once} on a promise object.
+			
+			Afterwards, the promise object gets immutable
+			\skippingparagraph
+			
+			Den status einer Promise kann nur die erzeugende Funktion ändern.
+			\skippingparagraph
+			
+			Der Status kann genau einen Übergang von pending zu settled haben.
+		}
+	\end{frame}
+		
+	\begin{frame}{Resolving a Promise}{Getting a Hold of the Value Using \texttt{p.then([f],[r])}}
+		The receiver of a promise can register handler functions for fulfillment and rejection of a promise.
+		
+		\begin{itemize}[<+->]
+			\item<2-> each promise has a method\\
+			\texttt{p.then([f],[r]) returns Promise}
+			\begin{itemize}
+				\item<2-> \texttt{f} and \texttt{r} are handler functions
+				\item<2-> \texttt{f} is called when the promise state is ``fulfilled''
+				\item<2-> \texttt{r} is called when the promise state is ``rejected''
+				\item<2-> either of the function parameters \texttt{f} and \texttt{r} is optional
+			\end{itemize}
+			\item<3-> an arbitrary number of handlers may be registered
+			\item<4-> calls to \texttt{f} or \texttt{r} are always enqueued \\
+				and hence executed \alert{later}
+		\end{itemize}
+	
+		\note{
+			\begin{itemize}
+				\item Jede Funktion, die eine Referenz auf die Promise hat kann
+				\item Handler Funktionen registrieren
+				\item Handler können das Ergebnis bearbeiten (fulfilled)
+				\item oder Fehler verarbeiten (rejected)
+				\item Es können beliebig viele Handler registriert werden (immutable)
+				\item Auch wenn die Promise bei Registrierung schon settled ist wird trotzdem asynchron der Handler ausgeführt
+			\end{itemize}
+		}
+	\end{frame}
+
+	\begin{frame}{Sequence Diagram of Promises}
+		\begin{figure}
+			\includegraphics[height=0.8\textheight]{Images/promiseFlow.png}
+		\end{figure}
+		
+		\note{
+		\begin{itemize}
+			\item Das Promise Objekt wird von der asynchronen Funktion \alert{synchron} erzeugt\\
+			aber es wird noch kein value zugewiesen
+			\item Die Promise wird sofort zurückgegeben
+			\item Der Empfänger kann nach Gusto Handler erzeugen und darauf registrieren
+			\item Oder aber die Promise an andere Funktionen weiterreichen
+			\item Die Async Funktion \alert{settled} die Promise sobald sie fertig ist.
+			\item Wenn die Promise settled ist, werden die \alert{passenden} Handler ausgeführt.\\
+			genau ein Mal\\
+			immer asynchron
+			\item Die asynchrone Funktion kennt die Handler \alert{nicht}
+		\end{itemize}
+	}
+	\end{frame}
+
+
+	\begin{frame}{Promise Chaining}
+		Multiple promise resolutions can follow one after the other:
+
+		\begin{itemize}
+			\item<2-> the return value of \texttt{p.then()} is a new promise that settles to the return value of the handler
+			\item<3-> a call to \texttt{p.then()} with no registered handler just returns the underlying promise value wrapped in another promise
+			\item<4-> an exception within \texttt{p.then()} yields a rejected promise
+		\end{itemize}
+
+		\uncover<5->{This behavior enables effective \\
+		functional \alert{composition} called \alert{Promise Chaining}}
+		
+		\note{
+			Eine weitere wichtige Eigenschaft
+			\skippingparagraph
+			
+			Damit werden Promises erst wirklich spassig
+		}
+	
+	\end{frame}
+	
+	\begin{frame}{Error Handling with Promises}
+		Error handling gets easy with chained promises
+		\begin{itemize}[<+->]
+			\item<+-> every exception leads to a rejected promise
+			\item<.-> if no rejection handler is registered, \\
+				\texttt{p.then()} just returns a new rejected promise
+			\item<.-> unhandled rejections propagate through the promise chain
+		\end{itemize}
+		\uncover<.->{
+			\begin{quote}Rejections and errors propagate through promise chains. When one promise is rejected all subsequent promises in the chain are rejected in a domino effect until an onRejected handler is found. In practice, one catch function is used at the end of a chain [\ldots] to handle all rejections.~\citep[S.~20]{Parker.2015}\end{quote}
+		}
+
+		\note{
+			Fehlerbehandlung wird durch Promises sicher
+			\skippingparagraph
+			
+			Fehler sprudeln auf bis zum Ende\\
+			und können zentral behandelt werden
+			\skippingparagraph
+			
+			Es ist gute Praxis am ende einer Promise Chain einen Fehlerhandler anzubringen\\
+		}
+	\end{frame}
+
+	\begin{frame}{Example: Error Handling in Promise Chains}
+	\begin{picture}(320,250)
+		\put(170,90){\includegraphics[width=4.5cm]{Images/2017-01-20_16_02_42_JavaScript_Promises_anIntroduction_Web_Google_Developers.png}}
+		\put(5,250){\begin{minipage}[t]{0.8\linewidth}
+			{\small{\insertcode{snippets/errorHandling.js}}}
+			\end{minipage}}
+	\end{picture}
+	
+			\note{
+		Hier ein Konstrukt Promise.catch()\\
+		Das ist eine Abkürzung für Promise.then(null, r)\\
+		Es wird lediglich der Rejection Handler registriert, 
+		kein Fulfillment Handler\\
+		Bei Fulfillment wird die Promise einfach durchgereicht.
+	}
+	\end{frame}
+
+	\begin{frame}{There are Callbacks All Over}{Didn't You just Tell Me This is a Bad thing?}
+	
+		\onslide<1->\begin{quote}
+			You've no doubt noticed that Promises don't get rid of callbacks at all. They just change where the callback is passed to. Instead of passing a callback to foo(..) , we get \textit{something }(ostensibly a genuine Promise) back from foo(..), and we pass the callback to that \textit{something}instead.~\citep[S.~52]{Simpson.2015}
+		\end{quote}
+		\begin{itemize}
+			\item<2-> The async function uses a callback to settle the promise 
+			\item<3-> The calling function registers handler callbacks to handle the result 
+			\item<4-> Promises still make heavy use of callbacks 
+		\end{itemize}
+		
+		\onslide<5-> The callback is no longer executed by foreign code
+		
+		\onslide<6-> \alert{The callback execution is guaranteed by the language definition.} \\
+		They cannot be invoked in an inappropriate way!
+
+		
+		\note{
+			Der wesentliche Unterschied zur Herausgabe eines Callbacks an eine asynchrone Funktion:
+			\begin{itemize}
+				\item Der Sprachstandard und die Laufzeitumgebung sorgen zuverlässig dafür, dass von der asynchronen Funktion auf einer Promise entweder resolve() oder reject() aufgerufen werden. Weitere Aufrufe haben keine Wirkung mehr
+				\item Der Handler-Callback wird auf dem Promise-Objekt registriert und hat eine durch den Sprachstandard vorgegebene Semantik
+				\item Der Handler (die Continuation) wird nicht mehr an fremden Code herausgereicht, sondern lediglich auf dem wohldefinierten Promise Objekt registriert.
+				\item Eine Handler-Funktion wird immer asynchorn aufgerufen, niemlas synchron
+				\item Eine Promise ist nach dem Settlement immutable und daher ist es sicher sie als Objekt durch den eigenen Code zu reichen und mehrfach zu verwenden.
+			\end{itemize}
+		}
+		
+	\end{frame}
+	
+	
+%	\subsection{ECMAScript~6 Promises}
+%	\begin{frame}{The ECMAScript~6 Promise API}{What Else is in Promises?}
+%		\begin{itemize}[<+->]
+%			\item \texttt{new Promise(resolve, reject)}: \\
+%				The promise constructor for new promises
+%			\item \texttt{Promise.resolve(val)} and \texttt{Promise.reject(val)}: \\
+%				Shortcuts to directly create a settled promise
+%			\item \texttt{Promise.all(it)}: \\
+%				Takes an iterable \texttt{it} of promises and returns
+%				a single promise the values of all input promises
+%			\item \texttt{Promise.race(it)}: \\
+%				Takes an iterable \texttt{it} of promises and returns
+%				a single promise with the value of the first settled promise
+%			\item \texttt{p.then([f], [r])}: \\
+%				Register fulfillment and rejection handler on a promise
+%			\item \texttt{p.catch([r])}: \\
+%				Shortcut for \texttt{p.then(null, [r])}
+%		\end{itemize}
+%	\end{frame}
+	
+	\subsection{The Fun of Promises}
+	
+	\begin{frame}{Do Promises Solve all of the Callback Problems?}
+		\begin{itemize}[<+->]
+			\item<1-> No continuation is passed to untrustable code.
+			\item<2-> Everything happens on the well defined promise object under control of the JavaScript runtime
+			\begin{itemize}[<+->]
+				\item<3-> No early calling of handler function \\
+					Guaranteed to be async
+				\item<3-> Easy timeout implementation using \texttt{Promise.race(it)}\\
+					No late calling
+				\item<3-> Handler functions execute exactly once
+			\end{itemize}
+			\item<4-> No silent swallowing of errors \\
+			Exceptions lead to rejected promise
+			\item<5-> Structured error handling becomes possible \\
+			Errors are propagated through the promise chain
+			\item<6-> No ``Pyramid of Doom''. The code gets readable again
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Example: Cats Again!}{Promises Enable Concise and Easy to Read Code}
+		\insertcode{snippets/watermarkProm.js}
+		\note{
+			Hier ein Konstrukt Promise.race()\\
+			Das wartet, bis alle Promises im Array gesettkled sind
+		}
+	\end{frame}
+
+\section{Generators}
+	\begin{frame}{There's More to Come}{Generators for Managing the Control Flow}
+		We are almost happy with promises, \\
+		however, synchronous code is still easier to read.
+		\skippingparagraph
+		
+		ECMAScript~6 offers another great feature \\
+		to ease the control flow of asynchronous functions:\\
+		\alert{Generators}
+		\skippingparagraph
+		
+		Generators enable writing asynchronous code \\
+		as if it was synchronous.
+	
+	\note{
+		Wir haben eigentlich was wir brauchen\\
+		Eine sichere Methode zum asynchronen Progerammieren
+		\skippingparagraph
+		
+		Und der Talk ist immer noch nicht zu Ende\\
+		Sorry!
+		\skippingparagraph
+		
+		Es gibt in ECMAScript 6 Generators, \\
+		die bei komplexen Kontrollflüssen noch ein bisschen mehr Spaß bringen\\
+		und die Lesbarkeit noch weiter verbessern.
+		
+	}
+	\end{frame}
+	
+	\subsection{Foundation}
+
+	\begin{frame}{Generator Theory First}{Generators Were Introduced for Different Purposes}
+		\begin{itemize}
+			\item Lots of collections are \texttt{Iterables}
+			\item \texttt{Iterators} are functions iterating over an \texttt{Iterable}
+			\item \texttt{Iterators} have a simple interface
+			\begin{itemize}
+				\item \texttt{it.next()} retrieves the next element \texttt{el}
+				\item \texttt{el} has two properties: \texttt{el.done} and \texttt{el.value}
+			\end{itemize}
+		\end{itemize}
+	\note{
+		Generators wurden nicht zur Steuerung des Kontrollflusses erfunden\\
+		Daher zunächste die graue Theorie\\
+		Die für Freunde funktionaler Programmierung mindestens genauso spannend ist.
+	}
+	\end{frame}
+
+	\begin{frame}{Generator Functions}{What Makes them Special?}
+		\alert<.>{Generators} are special functions implementing \\
+			the interfaces \texttt{Iterable} and \texttt{Iterator}
+		\begin{itemize}[<+->]
+			\item The values retrieved by \texttt{gen.next()} are not predefined \\
+				but computed on the fly
+			\item New keyword \alert<.>{\texttt{yield}} to send out values\\
+				The generator function pauses at \texttt{yield}, \\
+				till the value right to \texttt{yield} is retrieved by \texttt{gen.next()}
+			\item Additional methods and functionality
+			\begin{itemize}
+				\item<.-> \texttt{gen.next(val)} injects \texttt{val} at the position of \texttt{yield}
+				\item<.-> \texttt{gen.throw(err)} injects an exception
+				\item<.-> \texttt{gen.return(val)} ends the generator which returns \texttt{val}
+			\end{itemize}
+		\end{itemize}
+			
+		\uncover<+->{Generators behave like ``Coroutines'' and break the strict Run-to-Completion semantics of JavaScript}
+		\note{
+			\begin{itemize}
+				\item Hier noch erklären, dass durch 
+				\begin{itemize}
+					\item \texttt{gen.next(val)} und
+					\item \texttt{gen.throw(err)}
+				\end{itemize}
+				\item eine zwei Wege Kommunikation stattfinden kann. \\
+				Exceptions können entweder innerhalb gefangen werden oder beenden den Generator
+			
+				\item Durch das Pausieren werden Endlosschleifen im Generator möglich. \\
+				Das ist wie bei Streams und anderen unendlichen Datenstrukturen in funktionalen Sprachen
+			
+				\item Das Brechen der Run-to-Completion semantics ist nicht schlimm für Synchronisation, da die Abgabe der Kontrolle immer \alert{freiwillig} erfolgt und nicht \alert{präemptiv}.
+				
+				\item Shallow Coroutines (seicht, flach)
+			\end{itemize}
+		}
+	\end{frame}
+	
+	\begin{frame}{Example: Generator Counting Up}{Generator functions can be recognized by the star*}
+
+		\smaller\lstinputlisting[style=JSStyle, linebackgroundcolor={%
+			\btLstHL<2>{14}%
+			\btLstHL<3>{15}% 
+			\btLstHL<4>{16}%
+			\btLstHL<5>{17}%
+			\btLstHL<6>{18} %
+			\btLstHL<7>{19} %
+		}]{snippets/generatorExample.js}
+	
+		results in
+	
+		\smaller\lstinputlisting[style=JSStyle, linebackgroundcolor={%
+			\btLstHL<3>{1}%
+			\btLstHL<4>{2,3}%
+			\btLstHL<5>{4,5}%
+			\btLstHL<6>{6} %
+			\btLstHL<7>{7} %
+		}]{snippets/generatorExampleResults.js}
+	
+	\note{
+		Wir können uns das auch kurz ansehen. \\
+		Ist aber nicht spannend
+	}
+
+	\end{frame}
+
+	\subsection{Promises and Generators}
+	
+	\begin{frame}{Promises and Generators}{}
+		Promises and Generators can be combined \\
+			in a very interesting way:
+		\begin{itemize}[<+->]
+			\item On the right hand side of \texttt{yield}, a promise is retrieved
+			\item This promise is yielded out to the caller
+			\item The caller registers handlers on the yielded promise
+			\begin{itemize}
+				\item When the promise is fulfilled, \\
+					the handler injects the value back into the generator
+				\item When the promise is rejected, \\
+					the handler throws into the generator
+			\end{itemize}	
+			\item The caller takes the next promise out of the generator
+			\item Or finishes execution when the generator is exhausted
+		\end{itemize}
+
+		\uncover<.>{\alert{Using this pattern, inside the generator there are async function calls, but left hand  of \texttt{yield}, the fulfillment values can be used directly like if they were synchronous.}}
+	\end{frame}
+
+%	\begin{frame}{A Wrapper for Generator functions}{}
+%		The pattern can be factored out to a general generator runner:
+%		\smaller\insertcode{snippets/generatorRunner.js}
+%		
+%		\note{
+%			Der gezeigte Wrapper liefert eine Funktion, welche den Generator ablaufen lässt.
+%			\begin{itemize}
+%				\item Speise die übergebenen Parameter in den Generator
+%				\item Starte den Generator und nimm die erste ausgeleitete Promise.
+%				\item Registriere einen Handler, der den Wert der resolved Promise wieder in den Generator hineinwirft bzw. eine Exception wirft.
+%				\item Das mache, solange, bis der Generator erschöpft ist.
+%				\item Promise kommt raus, settlement wird abgewartet, Ergebnis wird wieder in den Generator eingespeist.
+%				\item Promise kommt raus, settlement wird abgewartet, Ergebnis wird wieder in den Generator eingespeist.
+%				\item Alles läuft asynchron, aber innerhablb des Generators kann synchron gearbeitet werden.
+%				\item Es funktioniert sogar ganz normal try-catch-finally
+%			\end{itemize}
+%		}
+%	\end{frame}
+
+	\begin{frame}{Example: Generated Cats}{Yielding Out the Cat from a Generator Using a stupid Runner}
+		\smaller\lstinputlisting[style=JSStyle, linebackgroundcolor={%
+			\btLstHL<2>{19}%
+			\btLstHL<3>{21,6}%
+			\btLstHL<4>{26}% 
+			\btLstHL<5>{22,6,7}%
+			\btLstHL<6>{23,7,8}%
+			\btLstHL<7>{24,8,9} %
+			\btLstHL<8>{1-16} %
+		}]{snippets/watermarkGenWithManualRunner.js}
+
+    	\uncover<8->{\alert{The Code inside the generator reads like sync and \\
+		brings back \texttt{try-catch-finally} to asynchronous programming.}}
+		
+		\note{
+			in reality do not program out the runner, but use co
+			
+			this enables code written like sync and is especially useful for complex control flows
+			
+			code is written in sync including try-catch-finally, but is executed efficiently like async
+			
+			this pattern is regarded as important that it is awaited (pun intended) in ECMAScript 2017 and can be used now with babel or node.js
+		}		
+		
+	\end{frame}
+	 
+	 \begin{frame}{Writing Async Code in Sync Style}{The Runner function for Generators and Promises is Easily Factored Out}
+		\begin{itemize}[<+->]
+			\item In real world code, the runner function for a generator yielding promises is easily factored out
+			\item A lot of ready made runner utilities is available; \\
+				\texttt{co} is most popular (see~\citep{TJHolowaychuk.2013b}) 
+			\item Generators in conjunction with a runner utility enable the programmer to write async code in a synchronous fashion
+			\item This makes complex control flows very concise and readable
+			\item The async advantage does not get lost
+		\end{itemize}
+	 \end{frame}
+
+	\begin{frame}{Generators Read like Synchronous Code, \ldots}
+			{\ldots but in fact that's true asynchronous programming}
+	\smaller\insertcode{snippets/watermarkGenWithAsyncRunner.js}
+	\pause
+	
+	\alert{The Code inside the generator reads like sync and \\
+		brings back \texttt{try-catch} to asynchronous programming.}
+	
+	\end{frame}
+ 
+	 \begin{frame}{The Future of Generators:  \texttt{async} and \texttt{await}}{Async control flow gets easy in future ECMAScript versions}
+		The pattern of Promises, Generators and a runner utility \\
+			was considered important enough, that it will be \\
+			(most likely) part of the ECMAScript 2017 standard
+		\begin{itemize}[<+->]
+			\item \texttt{async} and \texttt{await} are already reserved keywords
+			\item Async functions implement the presented pattern 
+			\item At each \texttt{await} keyword, the right hand promise is resolved before the async execution continues
+			\item Promise specialties like \texttt{Promise.all()} or \texttt{Promise.race()} are still available
+			\item This takes away the burden of an additional runner utility
+		\end{itemize}								
+	 \end{frame}
+
+
+ 
+	\begin{frame}{Example: Async Cats}
+		\lstinputlisting[style=JSStyle, linebackgroundcolor={%
+			\btLstHL<2>{3}%
+			\btLstHL<3>{4}%
+			\btLstHL<4>{5}% 
+			\btLstHL<5>{6}%
+			\btLstHL<6>{11}%
+			\btLstHL<7>{13} %
+		}]{snippets/watermarkAsync.js}
+		
+		\onslide<8>	%to get rid of code markings
+		
+		\note{
+			Das liest sich wie synchroner code.
+			
+			Try-Catch-finally funcktionieren wie gewohnt
+			
+			Alles ist schön effizient und async.
+			
+			ABER Beachte: Der ``console.log()'' kommt natürlich auch erst nach dem ``finally''
+			That's it\\
+			SUMMARY
+			
+		}		
+	 	
+	 \end{frame}
+
+\section*{Summary} 
+
+\begin{frame}[t]{Summary}{	\alert{Asynchronous Programming} is the Key to \alert{Concurrency} in JavaScript}
+
+	% Keep the summary *very short*.
+
+	Lots of brave coders got lost fighting \alert{``Callback Hell''}
+	\vskip0pt plus.5fill
+	\only<1>{\centering\includegraphics[width=.8\textwidth]{Images/fightingCallbackHell.jpg}
+	\source{\url{http://cs6.pikabu.ru/images/big_size_comm/2015-07_5/1437839925179784091.jpg}}}
+	
+	\only<2->{
+	\begin{itemize}[<+->]
+		\item<2-> \alert<2>{Promises} are a suitable relief and give back control. \onslide<3-> They
+		\begin{itemize}
+			\item<3-> are \alert<3>{safe} to use
+			\item<3-> enable structured \alert<3>{error handling}
+			\item<3-> help structuring complex \alert<3>{control flows}
+		\end{itemize}
+		\item<4-> \alert<4>{Use Promises everywhere!} \\
+			(and don't be shy to polyfill them)
+		\item<5-> \alert{Promises are great!}
+	\end{itemize}
+  
+	% The following outlook is optional.
+	\vskip0pt plus.5fill
+	
+	\onslide<6-> For really complex control flows another great feature is \\
+		\alert<6>{Generators} and upcoming \alert<6>{\texttt{async/await}}, \\
+		however, they need more effort to polyfill.
+
+	\onslide<7->	%to switch off the alerting
+	}
+\end{frame}
+
+\begin{frame}{Thank's a Lot!}
+	\begin{center}
+		\includegraphics[height=.8\textheight]{images/cat_with_Logo_HannoverJs.png}
+%		\includegraphics[height=.8\textheight]{images/cat_with_Logo_FernUni.png}
+
+	\source{cat taken from \url{http://wallpapersinhq.online/20777-smiling_kitten_cats_tabby_cat_hd_wallpaper/}}
+	\end{center}
+
+
+\end{frame}
+
+
+\begin{frame}{Bibliography}
+	\bibliographystyle{dinat}
+	\smaller\smaller\smaller\bibliography{literatur} 
+\end{frame}
+
+\begin{frame}{Go Out, Write Good Code!}
+	\centering
+	\includegraphics*[height = 0.85\textheight]{images/code_quality_2.png}
+	\source{\url{http://xkcd.com/1695/}}
+\end{frame}
+
+\end{document}
+
+

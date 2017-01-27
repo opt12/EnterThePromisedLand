@@ -1,0 +1,215 @@
+%----------------------------------------------------------------------------------------
+%	REQUIRED PACKAGES
+%----------------------------------------------------------------------------------------
+
+\usepackage{graphicx} % Required for including images
+\graphicspath{{Figures/}} % Set the default folder for images
+
+\usepackage[square,
+authoryear,
+]{natbib}
+
+\usepackage{relsize, etoolbox, lmodern}% http://ctan.org/pkg/{relsize,etoolbox}
+
+\AtBeginEnvironment{quote}{\smaller\fontfamily{lmss}\selectfont}% Step font down one size relative to current font.
+% see http://tex.stackexchange.com/questions/25249/how-do-i-use-a-particular-font-for-a-small-section-of-text-in-my-document for fontfamilies
+
+\usepackage{chngcntr}
+
+% to have a separation in the text with extra space between paragraphs and no indendation following
+\newcommand*{\skippingparagraph}{\par\vspace{1.0\baselineskip}\noindent}
+
+\usepackage[absolute,overlay]{textpos}
+
+\setbeamercolor{framesource}{fg=gray}
+\setbeamerfont{framesource}{size=\tiny}
+
+\newcommand{\source}[1]{\begin{textblock*}{6cm}(6.7cm,8.6cm)
+		\begin{beamercolorbox}[ht=0.5cm,right]{framesource}
+			\usebeamerfont{framesource}\usebeamercolor[fg]{framesource} Source: {#1}
+		\end{beamercolorbox}
+\end{textblock*}}
+
+%Framenumber in Header
+%http://tex.stackexchange.com/a/145899/123262
+
+\makeatletter
+\setbeamertemplate{frametitle}{%
+	\nointerlineskip%
+	\vskip-\beamer@headheight%
+	\vbox to \beamer@headheight{%
+		\vfil
+		\leftskip=-\beamer@leftmargin%
+		\advance\leftskip by0.3cm%
+		\rightskip=-\beamer@rightmargin%
+		\advance\rightskip by0.3cm plus1fil%
+		{\usebeamercolor[fg]{frametitle}
+			\usebeamerfont{frametitle}\insertframetitle\par}% added number
+		{\usebeamercolor[fg]{framesubtitle}
+			\usebeamerfont{framesubtitle}\insertframesubtitle\hfill{\tiny\insertframenumber/\inserttotalframenumber}\par}%
+		\vbox{}%
+		\vskip-1em%
+		\vfil
+	}%
+}
+\makeatother
+%----------------------------------------------------------------------------------------
+%	HYPERLINKS
+%---------------------------------------------------------------------------------------
+
+\hypersetup{
+	%draft, % Uncomment to remove all links (useful for printing in black and white)
+	colorlinks=true, breaklinks=true, bookmarks=true,bookmarksnumbered,
+	urlcolor=brown, linkcolor=blue, citecolor=green, % Link colors
+	pdftitle={}, % PDF title
+	pdfauthor={\textcopyright}, % PDF Author
+	pdfsubject={}, % PDF Subject
+	pdfkeywords={}, % PDF Keywords
+	pdfcreator={pdfLaTeX}, % PDF Creator
+	pdfproducer={LaTeX with hyperref and ClassicThesis} % PDF producer
+}
+
+
+%----------------------------------------------------------------------------------------
+%	CODESNIPPETS
+%---------------------------------------------------------------------------------------
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Code Snippet
+% LaTeX Template
+% Version 1.0 (14/2/13)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Velimir Gayevskiy (vel@latextemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{wasysym}
+
+\usepackage{listings} % Required for inserting code snippets
+\usepackage{pgf, pgffor}
+\usepackage{lstlinebgrd} % see http://www.ctan.org/pkg/lstaddons
+
+\definecolor{DarkGreen}{rgb}{0.0,0.4,0.0} % Comment color
+\definecolor{highlight}{RGB}{255,251,204} % Code highlight color
+
+%%% listingsbackground from http://tex.stackexchange.com/a/85628/123262
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \btIfInRange{number}{range list}{TRUE}{FALSE}
+%
+% Test in int number <number> is element of a (comma separated) list of ranges
+% (such as: {1,3-5,7,10-12,14}) and processes <TRUE> or <FALSE> respectively
+
+\newcount\bt@rangea
+\newcount\bt@rangeb
+
+\newcommand\btIfInRange[2]{%
+	\global\let\bt@inrange\@secondoftwo%
+	\edef\bt@rangelist{#2}%
+	\foreach \range in \bt@rangelist {%
+		\afterassignment\bt@getrangeb%
+		\bt@rangea=0\range\relax%
+		\pgfmathtruncatemacro\result{ ( #1 >= \bt@rangea) && (#1 <= \bt@rangeb) }%
+		\ifnum\result=1\relax%
+		\breakforeach%
+		\global\let\bt@inrange\@firstoftwo%
+		\fi%
+	}%
+	\bt@inrange%
+}
+\newcommand\bt@getrangeb{%
+	\@ifnextchar\relax%
+	{\bt@rangeb=\bt@rangea}%
+	{\@getrangeb}%
+}
+\def\@getrangeb-#1\relax{%
+	\ifx\relax#1\relax%
+	\bt@rangeb=100000%   \maxdimen is too large for pgfmath
+	\else%
+	\bt@rangeb=#1\relax%
+	\fi%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \btLstHL<overlay spec>{range list}
+%
+% TODO BUG: \btLstHL commands can not yet be accumulated if more than one overlay spec match.
+% 
+\newcommand<>{\btLstHL}[1]{%
+	\only#2{\btIfInRange{\value{lstnumber}}{#1}{\color{orange!30}\def\lst@linebgrdcmd{\color@block}}{\def\lst@linebgrdcmd####1####2####3{}}}%
+}%
+\makeatother
+
+\lstdefinestyle{JSStyle}{ % Define a style for your code snippet, multiple definitions can be made if, for example, you wish to insert multiple code snippets using different programming languages into one document
+	language=JavaScript, % Detects keywords, comments, strings, functions, etc for the language specified
+%	backgroundcolor=\color{highlight}, % Set the background color for the snippet - useful for highlighting
+	basicstyle=\smaller\smaller\ttfamily, % The default font size and style of the code
+	breakatwhitespace=true, % If true, only allows line breaks at white space
+%	breaklines=true, % Automatic line breaking (prevents code from protruding outside the box)
+	captionpos=b, % Sets the caption position: b for bottom; t for top
+	commentstyle=\usefont{T1}{pcr}{m}{sl}\color{DarkGreen}, % Style of comments within the code - dark green courier font
+	deletekeywords={}, % If you want to delete any keywords from the current language separate them by commas
+	%escapeinside={\%}, % This allows you to escape to LaTeX using the character in the bracket
+	firstnumber=1, % Line numbers begin at line 1
+%	frame=single, % Frame around the code box, value can be: none, leftline, topline, bottomline, lines, single, shadowbox
+%	frameround=tttt, % Rounds the corners of the frame for the top left, top right, bottom left and bottom right positions
+	keywordstyle=\color{Blue}\textbf, % Functions are bold and blue
+	morekeywords={}, % Add any functions no included by default here separated by commas
+	numbers=left, % Location of line numbers, can take the values of: none, left, right
+	numbersep=5pt, % Distance of line numbers from the code box
+	numberstyle=\tiny\color{Gray}, % Style used for line numbers
+	rulecolor=\color{black}, % Frame border color
+	showstringspaces=false, % Don't put marks in string spaces
+	showtabs=false, % Display tabs in the code as lines
+%	stepnumber=5, % The step distance between line numbers, i.e. how often will lines be numbered
+	stringstyle=\color{Purple}, % Strings are purple
+	tabsize=2, % Number of spaces per tab in the code
+}
+
+\definecolor{darkgray}{rgb}{.4,.4,.4}
+\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
+
+
+%define Javascript language
+\lstdefinelanguage{JavaScript}{
+	keywords={typeof, new, true, false, catch, try, finally, function, return, null, then, catch, switch, var, if, in, while, do, else, case, break, yield, async, await, let, const},
+	keywordstyle=\color{blue}\bfseries,
+	ndkeywords={class, export, boolean, throw, implements, import, this},
+	ndkeywordstyle=\color{darkgray}\bfseries,
+	identifierstyle=\color{black},
+	sensitive=false,
+	comment=[l]{//},
+	morecomment=[s]{/*}{*/},
+	commentstyle=\color{purple}\ttfamily,
+	stringstyle=\color{red}\ttfamily,
+	morestring=[b]',
+	morestring=[b]"
+}
+
+\lstset{
+	language=JavaScript,
+	extendedchars=true,
+	basicstyle=\footnotesize\ttfamily,
+	showstringspaces=false,
+	showspaces=false,
+	numbers=left,
+	numberstyle=\footnotesize,
+	numbersep=9pt,
+	tabsize=2,
+	breaklines=true,
+	showtabs=false,
+	captionpos=b,
+	escapeinside={(*@}{@*)},	%see http://tex.stackexchange.com/a/8860/123262
+}
+
+% Create a command to cleanly insert a snippet with the style above anywhere in the document
+\newcommand{\insertcode}[1]{\lstinputlisting[label=#1,style=JSStyle]{#1}} % The first argument is the script location/filename
+

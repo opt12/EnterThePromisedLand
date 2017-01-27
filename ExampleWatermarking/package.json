@@ -1,0 +1,31 @@
+{
+  "name": "ExampleWatermarking",
+  "version": "1.0.0",
+  "description": "Code for the talk 'Enter the Promised Land'",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "develop": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opt12/EnterThePromisedLand"
+  },
+  "author": "Felix Eckstein, <github@embedded-engineering.de",
+  "license": "CC BY-SA 4.0",
+  "dependencies": {
+    "babel-polyfill": "^6.20.0",
+    "babelify": "^6.1.3",
+    "browserify": "^10.2.6",
+    "co": "^4.6.0",
+    "gulp": "^3.9.0",
+    "gulp-babel": "^5.1.0",
+    "gulp-livereload": "^3.8.0",
+    "gulp-watch": "^4.3.2",
+    "gulp-webserver": "^0.9.1",
+    "jimp": "^0.2.27",
+    "lodash.assign": "^3.2.0",
+    "resize-img": "^1.1.2",
+    "run-sequence": "^1.1.1",
+    "watchify": "^3.2.3"
+  }
+}
