@@ -9,7 +9,7 @@ If you like it, have fun! (and drop me a line)
 Cheers,
 Felix
 
-For all of you who reant to dig deeper, I strongly recommend:
+For all of you who want to dig deeper, I strongly recommend:
 * For a first scratch at the surface, but worth reading:   
 Parker, Daniel: JavaScript with promises,   
 ISBN: 9781449373214, http://proquest.tech.safaribooksonline.de/9781491930779
