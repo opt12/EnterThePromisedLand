@@ -1,0 +1,199 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Arsclassica Article
+% Structure Specification File
+%
+% This file has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Lorenzo Pantieri (http://www.lorenzopantieri.net) with extensive modifications by:
+% Vel (vel@latextemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	REQUIRED PACKAGES
+%----------------------------------------------------------------------------------------
+
+\usepackage[usenames,dvipsnames]{color} % Required for specifying custom colors and referring to colors by name
+
+\usepackage[
+nochapters, % Turn off chapters since this is an article        
+beramono, % Use the Bera Mono font for monospaced text (\texttt)
+eulermath,% Use the Euler font for mathematics
+eulerchapternumbers,
+pdfspacing, % Makes use of pdftex’ letter spacing capabilities via the microtype package
+dottedtoc % Dotted lines leading to the page numbers in the table of contents
+]{classicthesis} % The layout is based on the Classic Thesis style
+
+\usepackage{arsclassica} % Modifies the Classic Thesis package
+
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+
+\usepackage[utf8]{inputenc} % Required for including letters with accents
+
+\usepackage{graphicx} % Required for including images
+\graphicspath{{Figures/}} % Set the default folder for images
+
+\usepackage{enumitem} % Required for manipulating the whitespace between and within lists
+
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+
+\usepackage{amsmath,amssymb,amsthm} % For including math equations, theorems, symbols, etc
+
+\usepackage{varioref} % More descriptive referencing
+
+\usepackage{url}
+
+\usepackage{hyperref}
+
+\usepackage[ngerman, english]{babel}
+
+\usepackage[square,
+authoryear,
+%numbers,
+longnamesfirst
+]{natbib}
+
+\usepackage{enumitem}
+
+\usepackage{authblk}
+
+\usepackage{relsize, etoolbox, lmodern}% http://ctan.org/pkg/{relsize,etoolbox}
+
+\AtBeginEnvironment{quote}{\smaller\fontfamily{lmss}\selectfont}% Step font down one size relative to current font.
+% see http://tex.stackexchange.com/questions/25249/how-do-i-use-a-particular-font-for-a-small-section-of-text-in-my-document for fontfamilies
+
+\usepackage{chngcntr}
+
+% to have a separation in the text with extra space between paragraphs and no indendation following
+\newcommand*{\skippingparagraph}{\par\vspace{1.0\baselineskip}\noindent}
+
+%----------------------------------------------------------------------------------------
+%	HYPERLINKS
+%---------------------------------------------------------------------------------------
+\definecolor{mediumviolet-red}{rgb}{0.78, 0.08, 0.52}
+\hypersetup{
+%	draft, % Uncomment to remove all links (useful for printing in black and white)
+	colorlinks=true, breaklinks=true, bookmarks=true,bookmarksnumbered,
+	urlcolor=webbrown, linkcolor=mediumviolet-red, citecolor=webgreen, % Link colors
+	pdftitle={}, % PDF title
+	pdfauthor={\textcopyright}, % PDF Author
+	pdfsubject={}, % PDF Subject
+	pdfkeywords={}, % PDF Keywords
+	pdfcreator={pdfLaTeX}, % PDF Creator
+	pdfproducer={LaTeX with hyperref and ClassicThesis} % PDF producer
+}
+
+%----------------------------------------------------------------------------------------
+%	TODONOTES
+%---------------------------------------------------------------------------------------
+
+\usepackage[colorinlistoftodos]{todonotes}
+
+\newcommand{\todoInfo}[1]{\todo[color=blue!25]{INFO: #1}}
+\newcommand{\todoCite}[1]{\todo[color=green!40]{INFO: #1}}
+
+
+%----------------------------------------------------------------------------------------
+%	CODESNIPPETS
+%---------------------------------------------------------------------------------------
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Code Snippet
+% LaTeX Template
+% Version 1.0 (14/2/13)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Velimir Gayevskiy (vel@latextemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{listings} % Required for inserting code snippets
+
+\definecolor{DarkGreen}{rgb}{0.0,0.4,0.0} % Comment color
+\definecolor{highlight}{RGB}{255,251,204} % Code highlight color
+\definecolor{DogwoodRose}{rgb}{0.84, 0.09, 0.41}
+\definecolor{lemonchiffon}{rgb}{1.0, 0.98, 0.8}
+\definecolor{lightgoldenrodyellow}{rgb}{0.98, 0.98, 0.82}
+\definecolor{oldlace}{rgb}{0.99, 0.96, 0.9}
+\definecolor{oldlavender}{rgb}{0.47, 0.41, 0.47}
+\definecolor{pakistangreen}{rgb}{0.0, 0.4, 0.0}
+\definecolor{ao}{rgb}{0.0, 0.0, 1.0}
+\definecolor{britishracinggreen}{rgb}{0.0, 0.26, 0.15}
+\definecolor{coquelicot}{rgb}{1.0, 0.22, 0.0}
+\definecolor{cordovan}{rgb}{0.54, 0.25, 0.27}
+\definecolor{darkcandyapplered}{rgb}{0.64, 0.0, 0.0}
+\definecolor{mediumchampagne}{rgb}{0.95, 0.9, 0.67}
+
+\lstdefinestyle{Style1}{ % Define a style for your code snippet, multiple definitions can be made if, for example, you wish to insert multiple code snippets using different programming languages into one document
+	language=JavaScript, % Detects keywords, comments, strings, functions, etc for the language specified
+	backgroundcolor=\color{oldlace}, % Set the background color for the snippet - useful for highlighting
+	basicstyle=\smaller\smaller\ttfamily, % The default font size and style of the code
+	breakatwhitespace=true, % If true, only allows line breaks at white space
+	breaklines=true, % Automatic line breaking (prevents code from protruding outside the box)
+	captionpos=b, % Sets the caption position: b for bottom; t for top
+	commentstyle=\usefont{T1}{pcr}{m}{sl}\color{ao}, % {m}DarkGreen Style of comments within the code - dark green courier font
+	deletekeywords={}, % If you want to delete any keywords from the current language separate them by commas
+	%escapeinside={\%}, % This allows you to escape to LaTeX using the character in the bracket
+	firstnumber=1, % Line numbers begin at line 1
+	frame=single, % Frame around the code box, value can be: none, leftline, topline, bottomline, lines, single, shadowbox
+	frameround=tttt, % Rounds the corners of the frame for the top left, top right, bottom left and bottom right positions
+	keywordstyle=\color{darkcandyapplered}\textbf, % Functions are bold and blue
+	morekeywords={}, % Add any functions no included by default here separated by commas
+	numbers=left, % Location of line numbers, can take the values of: none, left, right
+	numbersep=10pt, % Distance of line numbers from the code box
+	numberstyle=\tiny\color{Gray}, % Style used for line numbers
+	rulecolor=\color{black}, % Frame border color
+	showstringspaces=false, % Don't put marks in string spaces
+	showtabs=false, % Display tabs in the code as lines
+	stepnumber=5, % The step distance between line numbers, i.e. how often will lines be numbered
+	stringstyle=\color{Purple}, % Strings are purple
+	tabsize=2, % Number of spaces per tab in the code
+}
+
+\definecolor{darkgray}{rgb}{.4,.4,.4}
+\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
+
+
+%define Javascript language
+\lstdefinelanguage{JavaScript}{
+	keywords={typeof, new, true, false, catch, try, finally, function, return, null, then, catch, switch, var, if, in, while, do, else, case, break, yield, async, await},
+	keywordstyle=\color{blue}\bfseries,
+	ndkeywords={class, export, boolean, throw, implements, import, this},
+	ndkeywordstyle=\color{darkgray}\bfseries,
+	identifierstyle=\color{black},
+	sensitive=false,
+	comment=[l]{//},
+	morecomment=[s]{/*}{*/},
+	commentstyle=\color{purple}\ttfamily,
+	stringstyle=\color{red}\ttfamily,
+	morestring=[b]',
+	morestring=[b]"
+}
+
+\lstset{
+	language=JavaScript,
+	extendedchars=true,
+	basicstyle=\footnotesize\ttfamily,
+	showstringspaces=false,
+	showspaces=false,
+	numbers=left,
+	numberstyle=\footnotesize,
+	numbersep=9pt,
+	tabsize=2,
+	breaklines=true,
+	showtabs=false,
+	captionpos=b
+}
+
+% Create a command to cleanly insert a snippet with the style above anywhere in the document
+\newcommand{\insertcode}[2]{\begin{itemize}\item[]\lstinputlisting[{caption={#2}},label=#1,style=Style1]{#1}\end{itemize}} % The first argument is the script location/filename and the second is a caption for the listing
