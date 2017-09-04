@@ -1,7 +1,7 @@
 % $Header$
 
-\documentclass[xcolor=dvipsnames, handout]{beamer} %xcolor=dvipsnames
-%\documentclass[xcolor=dvipsnames]{beamer} %xcolor=dvipsnames
+%\documentclass[xcolor=dvipsnames, handout]{beamer} %xcolor=dvipsnames
+\documentclass[xcolor=dvipsnames]{beamer} %xcolor=dvipsnames
 \usepackage{pgfpages}
 
 \mode<presentation>
@@ -11,7 +11,7 @@
 	
 	\setbeamercovered{transparent}
 	% or whatever (possibly just delete it)
-	\setbeameroption{show notes} % un-comment to see the notes
+%	\setbeameroption{show notes} % un-comment to see the notes
 %	\setbeameroption{show notes on second screen=right}
 }
 
@@ -104,8 +104,8 @@ January 26\textsuperscript{th}, 2017}
 % is a graphic format that can be processed by latex or pdflatex,
 % resp., then you can add a logo as follows:
 
- \pgfdeclareimage[height=1cm]{university-logo}{Images/HannoverJs.png}
-%  \pgfdeclareimage[height=1cm]{university-logo}{Images/UniHagen.png}
+ \pgfdeclareimage[height=1cm]{university-logo}{images/HannoverJs.png}
+%  \pgfdeclareimage[height=1cm]{university-logo}{images/UniHagen.png}
  \logo{\pgfuseimage{university-logo}}
 
 
@@ -227,7 +227,7 @@ January 26\textsuperscript{th}, 2017}
 
 %	\begin{frame}{The Event-Loop}
 %		\begin{figure}
-%			\includegraphics[width=\textwidth]{Images/Gallaba,Mesbahetal.png}
+%			\includegraphics[width=\textwidth]{images/Gallaba,Mesbahetal.png}
 %			\caption{The JavaScript Even-Loop Model~(from \cite[p.~2]{Gallaba.b})}
 %		\end{figure}
 %	\end{frame}	
@@ -254,7 +254,7 @@ January 26\textsuperscript{th}, 2017}
 			\end{itemize}
 			\column{0.5\textwidth}
 				\begin{figure}
-					\includegraphics[height=.8\textheight]{Images/syncFlow.png}
+					\includegraphics[height=.8\textheight]{images/syncFlow.png}
 				\end{figure}
 		\end{columns}
 	
@@ -288,7 +288,7 @@ January 26\textsuperscript{th}, 2017}
 		Eventuell sogar noch die Grafik Zeigen: 
 		
 		\begin{figure}
-			\includegraphics[height=.5\textheight]{Images/NodeJS_eventLoop_externalThreads.png}
+			\includegraphics[height=.5\textheight]{images/NodeJS_eventLoop_externalThreads.png}
 			\caption{Asnychronous Functions are executed outside the JavaScript-Single-Thread}
 		\end{figure}
 		
@@ -393,7 +393,7 @@ January 26\textsuperscript{th}, 2017}
 
 	\begin{frame}{Asynchronous Image Retrieval}{Sequence Diagram for Asynchronous Image Retrieval with Callback}
 		\begin{figure}
-			\includegraphics[height=0.85\textheight]{Images/asyncFlow.png}
+			\includegraphics[height=0.85\textheight]{images/asyncFlow.png}
 		\end{figure}
 
 	\note{
@@ -472,13 +472,13 @@ January 26\textsuperscript{th}, 2017}
 			\end{itemize}
 		\only<1>{
 		\begin{figure}
-			\includegraphics[height=0.5\textheight]{Images/pyramidOfDoom.jpg}
+			\includegraphics[height=0.5\textheight]{images/pyramidOfDoom.jpg}
 			\source{\url{http://eng.localytics.com/content/images/2015/04/francois-bg.jpg}}
 		\end{figure}
 		}
 		\only<2>{
 		\begin{figure}
-			\includegraphics[height=0.5\textheight]{Images/callbacks.png}
+			\includegraphics[height=0.5\textheight]{images/callbacks.png}
 			\source{\url{http://i.imgur.com/DEg3cPZ.png}}
 		\end{figure}
 		}}}
@@ -568,7 +568,7 @@ January 26\textsuperscript{th}, 2017}
 	\subsection{Foundation}
 	\begin{frame}{The States of a Promise}
 		\begin{figure}
-			\includegraphics[width=0.5\textwidth]{Images/Parker2015-JavaScript.jpg}
+			\includegraphics[width=0.5\textwidth]{images/Parker2015-JavaScript.jpg}
 			\caption{\label{promiseStates}The three states of a Promise.~(from \citep[S.~16]{Parker.2015})}
 		\end{figure}
 		 
@@ -676,7 +676,7 @@ January 26\textsuperscript{th}, 2017}
 
 	\begin{frame}{Sequence Diagram of Promises}
 		\begin{figure}
-			\includegraphics[height=0.8\textheight]{Images/promiseFlow.png}
+			\includegraphics[height=0.8\textheight]{images/promiseFlow.png}
 		\end{figure}
 		
 		\note{
@@ -743,7 +743,7 @@ January 26\textsuperscript{th}, 2017}
 
 	\begin{frame}{Example: Error Handling in Promise Chains}
 	\begin{picture}(320,250)
-		\put(170,90){\includegraphics[width=4.5cm]{Images/2017-01-20_16_02_42_JavaScript_Promises_anIntroduction_Web_Google_Developers.png}}
+		\put(170,90){\includegraphics[width=4.5cm]{images/2017-01-20_16_02_42_JavaScript_Promises_anIntroduction_Web_Google_Developers.png}}
 		\put(5,250){\begin{minipage}[t]{0.8\linewidth}
 			{\small{\insertcode{snippets/errorHandling.js}}}
 			\end{minipage}}
@@ -1091,7 +1091,7 @@ January 26\textsuperscript{th}, 2017}
 
 	Lots of brave coders got lost fighting \alert{``Callback Hell''}
 	\vskip0pt plus.5fill
-	\only<1>{\centering\includegraphics[width=.8\textwidth]{Images/fightingCallbackHell.jpg}
+	\only<1>{\centering\includegraphics[width=.8\textwidth]{images/fightingCallbackHell.jpg}
 	\source{\url{http://cs6.pikabu.ru/images/big_size_comm/2015-07_5/1437839925179784091.jpg}}}
 	
 	\only<2->{
@@ -1137,7 +1137,7 @@ January 26\textsuperscript{th}, 2017}
 
 \begin{frame}{Go Out, Write Good Code!}
 	\centering
-	\includegraphics*[height = 0.85\textheight]{images/code_quality_2.png}
+	\includegraphics[height = 0.85\textheight]{images/code_quality_2.png}
 	\source{\url{http://xkcd.com/1695/}}
 \end{frame}
 
